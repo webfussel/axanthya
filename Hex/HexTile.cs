@@ -7,6 +7,7 @@ public class HexTile {
 	public float Height {get; set;}
 	public int Biome {get; set;}
 	public ElevationType Elevation {get; set;}
+	public float Moisture {get; set;}
 
 	public TileBase InfrastructureTile {get; set;}
 
@@ -19,6 +20,7 @@ public class HexTile {
 		Height = 0f;
 		Biome = -1;
 		Elevation = ElevationType.FLAT;
+		Moisture = 0f;
 	}
 
 	public void SetTile(Tilemap map, TileBase mapTile) {

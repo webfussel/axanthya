@@ -5,5 +5,6 @@ using UnityEngine.Tilemaps;
 public class Biome : ScriptableObject
 {
   [SerializeField] public TileBase mountain, hill, flat, coast, water;
+  [SerializeField] public TileBase trees, flowers;
   [SerializeField] public int count, minRange, maxRange;
 }

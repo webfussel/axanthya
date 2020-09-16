@@ -59,6 +59,21 @@ public class HexMap {
 		}
 	}
 
+	public static void MoistureArea(int x, int y, int range, float centerMoist = 0.5f) {
+		HexTile center = GetHex(new Vector3Int(x, y, 0));
+		HexTile[] area = GetTilesWithinRange(center, range);
+
+		foreach(HexTile tile in area) {
+			float percentage = (int)(Mathf.Lerp(1f, 0.05f, GetDistance(center, tile) / range) * 100);
+			int random = Random.Range(1, 66);
+			if (random < percentage) {
+				tile.Moisture += centerMoist * Mathf.Lerp(1f, 0.25f, GetDistance(center, tile) / range);
+			} else {
+				tile.Moisture = 0f;
+			}
+		}
+	}
+
 	public static float GetDistance(HexTile from, HexTile to) {
 		return
 			Mathf.Max(
