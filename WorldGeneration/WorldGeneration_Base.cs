@@ -24,8 +24,8 @@ public class WorldGeneration_Base : MonoBehaviour
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int coordinate = terrain.WorldToCell(mouseWorldPos);
             HexTile tile = HexMap.GetHex(new Vector3Int(coordinate.y, coordinate.x, 0));
-            string display = "Q: {0} | R: {1} | S: {2} | Elevation: {3} | Moisture: {4}";
-            Debug.Log(string.Format(display, tile.HexCoords.Q, tile.HexCoords.R, tile.HexCoords.S, tile.Elevation, tile.Moisture));
+            string display = "X: {0} | Y: {1} | Q: {2} | R: {3} | S: {4} | Elevation: {5} | Moisture: {6} | Infrastructure: {7}";
+            Debug.Log(string.Format(display, coordinate.x, coordinate.y, tile.HexCoords.Q, tile.HexCoords.R, tile.HexCoords.S, tile.Elevation, tile.Moisture, tile.Infrastructure));
         }
     }
 
@@ -102,11 +102,13 @@ public class WorldGeneration_Base : MonoBehaviour
             for (int col = 0; col < width; col++) {
                 HexTile hex = HexMap.GetHex(new Vector3Int(row, col, 0));
                 if (hex.Elevation == ElevationType.FLAT || hex.Elevation == ElevationType.HILL) {
-                    if (hex.Moisture > 0.7f) {
+                    if (hex.MoistureLevel > 0.7f) {
                         TileBase tile = hex.Biome != -1 ? biome[hex.Biome].trees : biomeDefault.trees;
+                        hex.Moisture = MoistureType.FOREST;
                         flora.SetTile(hex.TilemapCoords, tile);
-                    } else if (hex.Moisture > 0.2f && hex.Moisture < 0.4f) {
+                    } else if (hex.MoistureLevel > 0.2f && hex.MoistureLevel < 0.4f) {
                         TileBase tile = hex.Biome != -1 ? biome[hex.Biome].flowers : biomeDefault.flowers;
+                        hex.Moisture = MoistureType.FLOWERS;
                         flora.SetTile(hex.TilemapCoords, tile);
                     }
                 }
@@ -118,5 +120,20 @@ public class WorldGeneration_Base : MonoBehaviour
         HexMap.Init(width, height);
         terrain.ClearAllTiles();
         flora.ClearAllTiles();
+    }
+
+    virtual protected void OnValidate() {
+        if (width < 1) {
+            width = 1;
+        }
+        if (height < 1) {
+            height = 1;
+        }
+        if (forests < 0) {
+            forests = 0;
+        }
+        if (flowerPatches < 0) {
+            flowerPatches = 0;
+        }
     }
 }

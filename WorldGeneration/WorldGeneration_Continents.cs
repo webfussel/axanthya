@@ -57,4 +57,12 @@ public class WorldGeneration_Continents : WorldGeneration_Base
 
         base.UpdateTerrain();
     }
+
+
+    override protected void OnValidate() {
+        base.OnValidate();
+        if (countContinents < 1) {
+            countContinents = 1;
+        }
+    }
 }

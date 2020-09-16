@@ -67,9 +67,9 @@ public class HexMap {
 			float percentage = (int)(Mathf.Lerp(1f, 0.05f, GetDistance(center, tile) / range) * 100);
 			int random = Random.Range(1, 66);
 			if (random < percentage) {
-				tile.Moisture += centerMoist * Mathf.Lerp(1f, 0.25f, GetDistance(center, tile) / range);
+				tile.MoistureLevel += centerMoist * Mathf.Lerp(1f, 0.25f, GetDistance(center, tile) / range);
 			} else {
-				tile.Moisture = 0f;
+				tile.MoistureLevel = 0f;
 			}
 		}
 	}

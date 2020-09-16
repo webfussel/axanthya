@@ -7,9 +7,10 @@ public class HexTile {
 	public float Height {get; set;}
 	public int Biome {get; set;}
 	public ElevationType Elevation {get; set;}
-	public float Moisture {get; set;}
-
+	public float MoistureLevel {get; set;}
+	public MoistureType Moisture {get; set;}
 	public TileBase InfrastructureTile {get; set;}
+	public InfrastructureType Infrastructure {get; set;}
 
 	public static HexTile NULL = new HexTile(new HexCoordinates(999999999, 999999999), new Vector3Int(0, 0, -10), null);
 
@@ -20,7 +21,9 @@ public class HexTile {
 		Height = 0f;
 		Biome = -1;
 		Elevation = ElevationType.FLAT;
-		Moisture = 0f;
+		MoistureLevel = 0f;
+		Moisture = MoistureType.NORMAL;
+		Infrastructure = InfrastructureType.NONE;
 	}
 
 	public void SetTile(Tilemap map, TileBase mapTile) {

@@ -2,7 +2,7 @@
 using UnityEngine.Tilemaps;
 
 public class WorldGeneration_Infrastructure : MonoBehaviour {
-    [SerializeField] TileBase[] fortress;
+    [SerializeField] protected TileBase[] tower;
     [SerializeField] protected Tilemap map;
 
     void Start()
@@ -11,8 +11,10 @@ public class WorldGeneration_Infrastructure : MonoBehaviour {
     }
 
     public void Generate() {
-        HexTile tile = HexMap.GetHex(new Vector3Int(132, 159, 0));
-        tile.InfrastructureTile = fortress[0];
+        HexTile tile = HexMap.GetHex(new Vector3Int(218, 131, 0));
+        tile.InfrastructureTile = tower[0];
+        tile.Infrastructure = InfrastructureType.TOWER;
+
         UpdateInfrastructure();
     }
 
