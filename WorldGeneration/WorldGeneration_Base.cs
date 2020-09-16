@@ -1,15 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class WorldGeneration_Terrain : MonoBehaviour
+public class WorldGeneration_Base : MonoBehaviour
 {
 
     [SerializeField] protected int width = 300, height = 300, seed = 375;
-    [SerializeField] protected int forests = 25, flowerPatches = 25;
-    [SerializeField] protected Tilemap map, flora;
+    [SerializeField] protected int forests = 50, flowerPatches = 150;
+    [SerializeField] protected Tilemap terrain, flora;
     [SerializeField] protected float elevationMountain = 2f, elevationHill = 1.7f, elevationFlat = 0.4f, elevationCoast = 0.2f;
     [SerializeField] protected Biome biomeDefault;
     [SerializeField] protected Biome[] biome;
+
+    public bool autoGenerate = false;
     
     // Start is called before the first frame update
     void Awake() {
@@ -20,7 +22,7 @@ public class WorldGeneration_Terrain : MonoBehaviour
     void Update() {
         if (Input.GetMouseButtonDown(0)) {
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int coordinate = map.WorldToCell(mouseWorldPos);
+            Vector3Int coordinate = terrain.WorldToCell(mouseWorldPos);
             HexTile tile = HexMap.GetHex(new Vector3Int(coordinate.y, coordinate.x, 0));
             string display = "Q: {0} | R: {1} | S: {2} | Elevation: {3} | Moisture: {4}";
             Debug.Log(string.Format(display, tile.HexCoords.Q, tile.HexCoords.R, tile.HexCoords.S, tile.Elevation, tile.Moisture));
@@ -37,7 +39,7 @@ public class WorldGeneration_Terrain : MonoBehaviour
                 TileBase tileToSet = biomeDefault.water;
                 HexTile hex = new HexTile(hexCoords, tilemapCoords, tileToSet);
                 HexMap.SetHex(hex);
-                map.SetTile(hex.TilemapCoords, tileToSet);
+                terrain.SetTile(hex.TilemapCoords, tileToSet);
             }
         }
 
@@ -54,13 +56,6 @@ public class WorldGeneration_Terrain : MonoBehaviour
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
                 HexTile hex = HexMap.GetHex(new Vector3Int(row, col, 0));
-
-                /*float moisture_noise =
-                    Mathf.PerlinNoise(
-                        ((float) row/width) + Random.Range(-100000, 100000),
-                        ((float) col/height) + Random.Range(-100000, 100000)
-                    );
-                hex.Moisture = moisture_noise;*/
 
                 // Elevation and whole map
                 if (hex.Height >= elevationMountain) {
@@ -80,7 +75,7 @@ public class WorldGeneration_Terrain : MonoBehaviour
                     hex.Elevation = ElevationType.WATER;
                 }
 
-                map.SetTile(hex.TilemapCoords, hex.MapTile);
+                terrain.SetTile(hex.TilemapCoords, hex.MapTile);
             }
         }
 
@@ -92,14 +87,14 @@ public class WorldGeneration_Terrain : MonoBehaviour
             int x = Random.Range(0, width);
             int y = Random.Range(0, height);
 
-            HexMap.MoistureArea(x, y, Random.Range(15, 25), 2f);
+            HexMap.MoistureArea(x, y, Random.Range(width / 40, width / 24), 2f);
         }
 
         for (int flowers = 0; flowers < flowerPatches; flowers++) {
             int x = Random.Range(0, width);
             int y = Random.Range(0, height);
 
-            HexMap.MoistureArea(x, y, Random.Range(15, 25), 0.4f);
+            HexMap.MoistureArea(x, y, Random.Range(width / 40, width / 24), 0.4f);
         }
 
 
@@ -117,5 +112,11 @@ public class WorldGeneration_Terrain : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void ResetTiles() {
+        HexMap.Init(width, height);
+        terrain.ClearAllTiles();
+        flora.ClearAllTiles();
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WorldGeneration_Swampy : WorldGeneration_Terrain
+public class WorldGeneration_Swampy : WorldGeneration_Base
 {
     
     [SerializeField] int countContinents = 3;
