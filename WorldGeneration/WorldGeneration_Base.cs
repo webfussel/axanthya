@@ -24,8 +24,8 @@ public class WorldGeneration_Base : MonoBehaviour
             Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Vector3Int coordinate = terrain.WorldToCell(mouseWorldPos);
             HexTile tile = HexMap.GetHex(new Vector3Int(coordinate.y, coordinate.x, 0));
-            string display = "X: {0} | Y: {1} | Q: {2} | R: {3} | S: {4} | Elevation: {5} | Moisture: {6} | Infrastructure: {7}";
-            Debug.Log(string.Format(display, coordinate.x, coordinate.y, tile.HexCoords.Q, tile.HexCoords.R, tile.HexCoords.S, tile.Elevation, tile.Moisture, tile.Infrastructure));
+            string display = "X: {0} | Y: {1} | Q: {2} | R: {3} | S: {4} | Elevation: {5} ({6}) | Moisture: {7} ({8}) | Infrastructure: {9}";
+            Debug.Log(string.Format(display, coordinate.x, coordinate.y, tile.HexCoords.Q, tile.HexCoords.R, tile.HexCoords.S, tile.Elevation, tile.Height, tile.Moisture, tile.MoistureLevel, tile.Infrastructure));
         }
     }
 
