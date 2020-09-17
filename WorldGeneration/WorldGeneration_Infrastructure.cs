@@ -11,7 +11,7 @@ public class WorldGeneration_Infrastructure : MonoBehaviour {
     }
 
     public void Generate() {
-        HexTile tile = HexMap.GetHex(new Vector3Int(218, 131, 0));
+        HexTile tile = HexMap.GetHex(new Vector3Int(130, 40, 0));
         tile.InfrastructureTile = tower[0];
         tile.Infrastructure = InfrastructureType.TOWER;
 

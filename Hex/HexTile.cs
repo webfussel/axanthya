@@ -5,7 +5,8 @@ public class HexTile {
 	public Vector3Int TilemapCoords {get; set;}
 	public TileBase MapTile {get; set;}
 	public float Height {get; set;}
-	public int Biome {get; set;}
+	public string Biome {get; set;}
+	public int BiomeIndex {get; set;}
 	public ElevationType Elevation {get; set;}
 	public float MoistureLevel {get; set;}
 	public MoistureType Moisture {get; set;}
@@ -19,7 +20,8 @@ public class HexTile {
 		TilemapCoords = tilemapCoords;
 		MapTile = mapTile;
 		Height = 0f;
-		Biome = -1;
+		Biome = "DEFAULT";
+		BiomeIndex = -1;
 		Elevation = ElevationType.FLAT;
 		MoistureLevel = 0f;
 		Moisture = MoistureType.NORMAL;

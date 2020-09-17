@@ -19,16 +19,6 @@ public class WorldGeneration_Base : MonoBehaviour
         Generate();
     }
 
-    void Update() {
-        if (Input.GetMouseButtonDown(0)) {
-            Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Vector3Int coordinate = terrain.WorldToCell(mouseWorldPos);
-            HexTile tile = HexMap.GetHex(new Vector3Int(coordinate.y, coordinate.x, 0));
-            string display = "X: {0} | Y: {1} | Q: {2} | R: {3} | S: {4} | Elevation: {5} ({6}) | Moisture: {7} ({8}) | Infrastructure: {9}";
-            Debug.Log(string.Format(display, coordinate.x, coordinate.y, tile.HexCoords.Q, tile.HexCoords.R, tile.HexCoords.S, tile.Elevation, tile.Height, tile.Moisture, tile.MoistureLevel, tile.Infrastructure));
-        }
-    }
-
     virtual public void Generate() {
         Random.InitState(seed);
 
@@ -56,21 +46,23 @@ public class WorldGeneration_Base : MonoBehaviour
             for (int col = 0; col < width; col++) {
                 HexTile hex = HexMap.GetHex(new Vector3Int(row, col, 0));
 
+                hex.Biome = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].name : biomeDefault.name;
+
                 // Elevation and whole map
                 if (hex.Height >= elevationMountain) {
-                    hex.MapTile = hex.Biome != -1 ? biome[hex.Biome].mountain : biomeDefault.mountain;
+                    hex.MapTile = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].mountain : biomeDefault.mountain;
                     hex.Elevation = ElevationType.MOUNTAIN;
                 } else if (hex.Height >= elevationHill) {
-                    hex.MapTile = hex.Biome != -1 ? biome[hex.Biome].hill : biomeDefault.hill;
+                    hex.MapTile = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].hill : biomeDefault.hill;
                     hex.Elevation = ElevationType.HILL;
                 } else if (hex.Height >= elevationFlat) {
-                    hex.MapTile = hex.Biome != -1 ? biome[hex.Biome].flat : biomeDefault.flat;
+                    hex.MapTile = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].flat : biomeDefault.flat;
                     hex.Elevation = ElevationType.FLAT;
                 } else if (hex.Height >= elevationCoast) {
-                    hex.MapTile = hex.Biome != -1 ? biome[hex.Biome].coast : biomeDefault.coast;
+                    hex.MapTile = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].coast : biomeDefault.coast;
                     hex.Elevation = ElevationType.COAST;
                 } else {
-                    hex.MapTile = hex.Biome != -1 ? biome[hex.Biome].water : biomeDefault.water;
+                    hex.MapTile = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].water : biomeDefault.water;
                     hex.Elevation = ElevationType.WATER;
                 }
 
@@ -102,11 +94,11 @@ public class WorldGeneration_Base : MonoBehaviour
                 HexTile hex = HexMap.GetHex(new Vector3Int(row, col, 0));
                 if (hex.Elevation == ElevationType.FLAT || hex.Elevation == ElevationType.HILL) {
                     if (hex.MoistureLevel > 0.7f) {
-                        TileBase tile = hex.Biome != -1 ? biome[hex.Biome].trees : biomeDefault.trees;
+                        TileBase tile = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].trees : biomeDefault.trees;
                         hex.Moisture = MoistureType.FOREST;
                         flora.SetTile(hex.TilemapCoords, tile);
                     } else if (hex.MoistureLevel > 0.2f && hex.MoistureLevel < 0.4f) {
-                        TileBase tile = hex.Biome != -1 ? biome[hex.Biome].flowers : biomeDefault.flowers;
+                        TileBase tile = hex.BiomeIndex != -1 ? biome[hex.BiomeIndex].flowers : biomeDefault.flowers;
                         hex.Moisture = MoistureType.FLOWERS;
                         flora.SetTile(hex.TilemapCoords, tile);
                     }

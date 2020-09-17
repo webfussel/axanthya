@@ -43,7 +43,7 @@ public class HexMap {
 			float percentage = (int)(Mathf.Lerp(1f, 0.05f, GetDistance(center, tile) / range) * 100);
 			int random = Random.Range(1, 50);
 			if (random < percentage) {
-				tile.Biome = biome;
+				tile.BiomeIndex = biome;
 			}
 		}
 	}
