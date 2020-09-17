@@ -39,7 +39,6 @@ public class WorldGeneration_Base : MonoBehaviour
                 TileBase tileToSet = biomeDefault.water;
                 HexTile hex = new HexTile(hexCoords, tilemapCoords, tileToSet);
                 HexMap.SetHex(hex);
-                terrain.SetTile(hex.TilemapCoords, tileToSet);
             }
         }
 
